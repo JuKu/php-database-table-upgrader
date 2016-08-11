@@ -27,7 +27,7 @@ $table->addInt("id");
 $table->addInt("testint", 10, true, true);
 
 //add varchar column
-$table->addVarchar("text", 255, true, "default value");
+$table->addVarchar("test_text", 255, true, "default value");
 
 //add text column
 $table->addText("text");
