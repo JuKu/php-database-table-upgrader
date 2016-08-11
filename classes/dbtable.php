@@ -129,6 +129,49 @@ class DBTable {
         );
     }
 
+    public function addVarchar (string $name, int $length = 255, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
+        $this->columns[] = array(
+            'type' => "varchar",
+            'name' => $name,
+            'not_null' => $not_null,
+            'default' => $default_value,
+            'charset' => $charset,
+            'binary' => $binary,
+            'length' => $length
+        );
+    }
+
+    public function addBit (string $name, int $length = null, bool $not_null = false, string $default_value = null) {
+        $this->columns[] = array(
+            'type' => "bit",
+            'name' => $name,
+            'not_null' => $not_null,
+            'default' => $default_value,
+            'length' => $length
+        );
+    }
+
+    public function addBinary (string $name, int $length = null, bool $not_null = false, string $default_value = null) {
+        $this->columns[] = array(
+            'type' => "binary",
+            'name' => $name,
+            'not_null' => $not_null,
+            'default' => $default_value,
+            'length' => $length
+        );
+    }
+
+    public function addText (string $name, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
+        $this->columns[] = array(
+            'type' => "text",
+            'name' => $name,
+            'not_null' => $not_null,
+            'binary' => $binary,
+            'charset' => $charset,
+            'default' => $default_value
+        );
+    }
+
     public function generateCreateQuery () : string {
         $tmp_str = "";
 
@@ -195,8 +238,8 @@ class DBTable {
             }
 
             switch ($column['type']) {
+                //INT
                 case 'int':
-                    //Integer
                     $line .= "INT" . $length_str . $not_null_str;
 
                     //add AUTO_INCREMENT if neccessary
@@ -215,6 +258,44 @@ class DBTable {
                         $line .= " ZEROFILL";
                     }
 
+                    break;
+
+                //VARCHAR
+                case 'varchar':
+                    $line .= "VARCHAR" . $length_str . $not_null_str . $default_str;
+
+                    if ($column['binary'] == true) {
+                        $line .= " BINARY";
+                    }
+
+                    if ($column['charset'] != null) {
+                        $line .= " CHARACTER SET " . $column['charset'];
+                    }
+
+                    break;
+
+                //TEXT
+                case 'text':
+                    $line .= "TEXT" . $not_null_str . $default_str;
+
+                    if ($column['binary'] == true) {
+                        $line .= " BINARY";
+                    }
+
+                    if ($column['charset'] != null) {
+                        $line .= " CHARACTER SET " . $column['charset'];
+                    }
+
+                    break;
+
+                //BIT
+                case 'bit':
+                    $line .= "BIT" . $length_str . $not_null_str . $default_str;
+                    break;
+
+                //BINARY
+                case 'binary':
+                    $line .= "BINARY" . $length_str . $not_null_str . $default_str;
                     break;
 
                 default:
