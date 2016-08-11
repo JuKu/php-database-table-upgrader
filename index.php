@@ -26,4 +26,7 @@ $table->addInt("id");
 //add int coloum with length 10
 $table->addInt("testint", 10);
 
+//print CREATE statement for debugging
+echo $table->generateCreateQuery();
+
 ?>

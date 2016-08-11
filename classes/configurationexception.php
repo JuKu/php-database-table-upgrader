@@ -6,6 +6,6 @@
  * Date: 11.07.2016
  * Time: 23:31
  */
-class ConfigurationException extends Exception{
+class ConfigurationException extends Exception {
 
 }

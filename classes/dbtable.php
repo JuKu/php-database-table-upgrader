@@ -100,7 +100,9 @@ class DBTable {
     }
 
     protected function generateColoumQuery () : string {
-        return "";
+        $lines = array();
+
+        return implode(",\r\n", $lines);
     }
 
     public function escape ($str) {
