@@ -176,11 +176,11 @@ class DBTable {
         $tmp_str = "";
 
         if ($this->temp_table) {
-            $tmp_str = "TEMPORARY ";
+            $tmp_str = " TEMPORARY";
         }
 
         //http://dev.mysql.com/doc/refman/5.7/en/create-table.html
-        $sql = "CREATE " . $tmp_str . " TABLE `{DBPRAEFIX}" . $this->escape($this->table_name) . "` IF NOT EXISTS (\r\n";
+        $sql = "CREATE" . $tmp_str . " TABLE `{DBPRAEFIX}" . $this->escape($this->table_name) . "` IF NOT EXISTS (\r\n";
 
         //add coloums
         $sql .= $this->generateColoumQuery();
