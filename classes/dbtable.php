@@ -79,6 +79,9 @@ class DBTable {
     public function generateCreateQuery () : string {
         $sql = "CREATE TABLE `{DBPRAEFIX}" . $this->escape($this->table_name) . "` IF NOT EXISTS (";
 
+        //add coloums
+        $sql .= $this->generateColoumQuery();
+
         $sql .= ")";
 
         if (!empty($this->db_engine)) {
@@ -94,6 +97,10 @@ class DBTable {
         $sql .= ";";
 
         return $sql;
+    }
+
+    protected function generateColoumQuery () : string {
+        return "";
     }
 
     public function escape ($str) {
