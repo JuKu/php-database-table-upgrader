@@ -23,7 +23,7 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
 
 Create CREATE query:
 
-```
+```php
 //create or upgrade test table
 $table = new DBTable("test", $dbDriver);
 $table->setEngine("InnoDB");
