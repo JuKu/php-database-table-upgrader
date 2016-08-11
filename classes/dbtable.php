@@ -65,7 +65,7 @@ class DBTable {
         $this->db_engine = strtoupper($founded_engine);
     }
 
-    public function setCharset ($charset) : void {
+    public function setCharset ($charset) {
         $this->charset = utf8_encode(htmlentities($charset));
     }
 
