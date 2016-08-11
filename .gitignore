@@ -14,6 +14,8 @@
 
 .idea
 *.idea
+.cfg.php
+*.cfg.php
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
