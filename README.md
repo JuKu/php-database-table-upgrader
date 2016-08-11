@@ -13,5 +13,8 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
 ## Supported Data Types
   - INT
   - VARCHAR
+  - TEXT
+  - BIT
+  - BINARY
   
   - more are Work in Progress
