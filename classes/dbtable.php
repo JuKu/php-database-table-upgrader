@@ -82,7 +82,7 @@ class DBTable {
         //add coloums
         $sql .= $this->generateColoumQuery();
 
-        $sql .= "\r\n)";
+        $sql .= ")";
 
         if (!empty($this->db_engine)) {
             //add database engine
