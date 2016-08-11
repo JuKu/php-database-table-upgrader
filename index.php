@@ -23,8 +23,8 @@ $table->setCharset("utf8");
 //add int coloum
 $table->addInt("id");
 
-//add int coloum with length 10
-$table->addInt("testint", 10);
+//add int coloum with length 10, NOT NULL and AUTO_INCREMENT
+$table->addInt("testint", 10, true, true);
 
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
