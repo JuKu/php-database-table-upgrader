@@ -18,3 +18,39 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   - BINARY
   
   - more are Work in Progress
+  
+## Example
+
+Create CREATE query:
+
+```
+//create or upgrade test table
+$table = new DBTable("test", $dbDriver);
+$table->setEngine("InnoDB");
+$table->setCharset("utf8");
+
+//add int coloum
+$table->addInt("id");
+
+//add int coloum with length 10, NOT NULL and AUTO_INCREMENT
+$table->addInt("testint", 10, true, true);
+
+//add varchar column
+$table->addVarchar("test_text", 255, true, "default value");
+
+//add text column
+$table->addText("text");
+
+//print CREATE statement for debugging
+echo $table->generateCreateQuery();
+```
+
+prints following query:
+```
+CREATE  TABLE `{DBPRAEFIX}test` IF NOT EXISTS (
+`id` INT,
+`testint` INT(10) NOT NULL AUTO_INCREMENT,
+`test_text` VARCHAR(255) NOT NULL DEFAULT 'default value',
+`text` TEXT
+) TYPE=InnoDB DEFAULT CHARSET=utf8;
+```
