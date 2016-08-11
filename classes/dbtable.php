@@ -47,6 +47,8 @@ class DBTable {
         $found = false;
         $founded_engine = "";
 
+        echo "set engine " . $engine_name;
+
         foreach (self::$supported_engines as $name) {
             if (strcmp(strtolower($engine_name), strtolower($name))) {
                 //database engine is supported
