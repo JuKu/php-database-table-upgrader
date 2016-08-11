@@ -11,6 +11,30 @@ class DBTable {
     protected $table_name = "";
 
     /**
+     * database engine, like InnoDB
+     */
+    protected $db_engine = "";
+
+    /**
+     * default table charset
+     */
+    protected $charset = "utf8";
+
+    /**
+     * list of supported database engines
+     */
+    protected static $supported_engines = array(
+        "InnoDB",
+        "MyISAM",
+        "PERFORMANCE_SCHEMA",
+        "MRG_MYISAM",
+        "FEDERATED",
+        "CSV",
+        "MEMORY",
+        "ARCHIVE"
+    );
+
+    /**
      * coloums structure of database table
      */
     protected $columns = array();
@@ -19,14 +43,55 @@ class DBTable {
         $this->table_name = $table_name;
     }
 
+    public function setEngine ($engine_name) {
+        $found = false;
+        $founded_engine = "";
+
+        foreach (self::$supported_engines as $name) {
+            if (strcmp(strtolower($engine_name), strtolower($name))) {
+                //database engine is supported
+                $found = true;
+                $founded_engine = $name;
+
+                break;
+            }
+        }
+
+        if (!$found) {
+            throw new UnsupportedDBEngineException("Database engine " . $engine_name . " isnt in supported database engine list.");
+        }
+
+        //set database engine
+        $this->db_engine = strtoupper($founded_engine);
+    }
+
+    public function setCharset ($charset) : void {
+        $this->charset = utf8_encode(htmlentities($charset));
+    }
+
     public function addInt ($name, $length = 10) {
-        //
+        $this->columns[] = array(
+            'type' => "int",
+            'length' => $length
+        );
     }
 
     public function generateCreateQuery () : string {
         $sql = "CREATE TABLE `{DBPRAEFIX}" . $this->escape($this->table_name) . "` IF NOT EXISTS (";
 
-        $sql .= ");";
+        $sql .= ")";
+
+        if (!empty($this->db_engine)) {
+            //add database engine
+            $sql .= " TYPE=" . $this->db_engine;
+        }
+
+        if (!empty($this->charset)) {
+            //add default charset
+            $sql .= " DEFAULT CHARSET=" . $this->charset;
+        }
+
+        $sql .= ";";
 
         return $sql;
     }

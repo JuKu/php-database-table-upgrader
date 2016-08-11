@@ -15,4 +15,15 @@ require("autoloader.php");
 $dbDriver = new MySQLDriver();
 $dbDriver->connect(DTU_ROOT_PATH . "config/mysql.cfg.php");
 
+//create or upgrade test table
+$table = new DBTable("test", $dbDriver);
+$table->setEngine("InnoDB");
+$table->setCharset("utf8");
+
+//add int coloum
+$table->addInt("id");
+
+//add int coloum with length 10
+$table->addInt("testint", 10);
+
 ?>
