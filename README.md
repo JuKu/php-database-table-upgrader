@@ -21,7 +21,7 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   
 ## Example
 
-Create CREATE query:
+Create CREATE TABLE query:
 
 ```php
 //create or upgrade test table
