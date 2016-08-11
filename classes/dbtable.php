@@ -77,12 +77,12 @@ class DBTable {
     }
 
     public function generateCreateQuery () : string {
-        $sql = "CREATE TABLE `{DBPRAEFIX}" . $this->escape($this->table_name) . "` IF NOT EXISTS (";
+        $sql = "CREATE TABLE `{DBPRAEFIX}" . $this->escape($this->table_name) . "` IF NOT EXISTS (\r\n";
 
         //add coloums
         $sql .= $this->generateColoumQuery();
 
-        $sql .= ")";
+        $sql .= "\r\n)";
 
         if (!empty($this->db_engine)) {
             //add database engine
