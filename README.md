@@ -47,7 +47,7 @@ echo $table->generateCreateQuery();
 
 prints following query:
 ```sql
-CREATE  TABLE `{DBPRAEFIX}test` IF NOT EXISTS (
+CREATE TABLE `{DBPRAEFIX}test` IF NOT EXISTS (
 `id` INT,
 `testint` INT(10) NOT NULL AUTO_INCREMENT,
 `test_text` VARCHAR(255) NOT NULL DEFAULT 'default value',
