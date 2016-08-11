@@ -11,4 +11,8 @@ define('DTU_ROOT_PATH', dirname(__FILE__) . "/");
 //add autoloader
 require("autoloader.php");
 
+//create new database connection
+$dbDriver = new MySQLDriver();
+$dbDriver->connect(DTU_ROOT_PATH . "config/mysql.cfg.php");
+
 ?>
