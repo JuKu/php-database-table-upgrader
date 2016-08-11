@@ -186,6 +186,10 @@ class DBTable {
                 $length_str = "(" . (int) $column['length'] . ")";
             }
 
+            if (isset($column['not_null']) && $column['not_null'] == true) {
+                $not_null_str = " NOT NULL";
+            }
+
             if (isset($column['default']) && $column['default'] != null) {
                 $default_str = " DEFAULT '" . $column['default'] . "'";
             }
