@@ -20,6 +20,6 @@ function loadClass ($class_name) {
 }
 
 //register autoloader
-spl_autoload_register("PFS_Autoloader::loadClass");
+spl_autoload_register("loadClass");
 
 ?>
