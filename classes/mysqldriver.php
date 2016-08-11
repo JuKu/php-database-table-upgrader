@@ -25,8 +25,6 @@ class MySQLDriver implements DBDriver {
     public function connect ($config_path) {
         if (file_exists($config_path)) {
             require($config_path);
-        } else if (file_exists(LIB_PSF_CONFIG . $config_path)) {
-            require(LIB_PSF_CONFIG . $config_path);
         } else {
             throw new ConfigurationException("Couldnt found database configuration file " . $config_path . ".");
         }
