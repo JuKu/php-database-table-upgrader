@@ -62,7 +62,7 @@ class DBTable {
         }
 
         //set database engine
-        $this->db_engine = $founded_engine;
+        $this->db_engine = $name;
     }
 
     public function setCharset ($charset) {
