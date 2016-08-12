@@ -51,10 +51,10 @@ $table->addTimestamp("date", true, "0000-00-00 00:00:00");
 $table->addTimestamp("date1", true, "0000-00-00 00:00:00", true);
 
 //add primary key
-$table->addPrimaryKey(array("id", "testint", array('column' => "test_text", 'length' => 50)));
+//$table->addPrimaryKey(array("id", "testint", array('column' => "test_text", 'length' => 50)));
 
 //if you only want to add 1 column to primary key, you can use this instead:
-//$table->addPrimaryKey("column_name");
+$table->addPrimaryKey("testint");
 
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
