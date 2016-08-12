@@ -16,6 +16,12 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   - TEXT
   - BIT
   - BINARY
+  - TINYINT
+  - SMALLINT
+  - MEDIUMINT
+  - BIGINT
+  - DECIMAL
+  - NUMERIC
   
   - more are Work in Progress
   

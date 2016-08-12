@@ -172,6 +172,89 @@ class DBTable {
         );
     }
 
+    public function addTinyInt (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
+        $this->columns[] = array(
+            'type' => "tinyint",
+            'name' => $name,
+            'not_null' => $not_null,
+            'auto_increment' => $auto_increment,
+            'default' => $default_value,
+            'unsigned' => $unsigned,
+            'zerofill' => $zerofill,
+            'length' => $length
+        );
+    }
+
+    public function addSmallInt (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
+        $this->columns[] = array(
+            'type' => "smallint",
+            'name' => $name,
+            'not_null' => $not_null,
+            'auto_increment' => $auto_increment,
+            'default' => $default_value,
+            'unsigned' => $unsigned,
+            'zerofill' => $zerofill,
+            'length' => $length
+        );
+    }
+
+    public function addMediumInt (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
+        $this->columns[] = array(
+            'type' => "mediumint",
+            'name' => $name,
+            'not_null' => $not_null,
+            'auto_increment' => $auto_increment,
+            'default' => $default_value,
+            'unsigned' => $unsigned,
+            'zerofill' => $zerofill,
+            'length' => $length
+        );
+    }
+
+    public function addBigInt (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
+        $this->columns[] = array(
+            'type' => "bigint",
+            'name' => $name,
+            'not_null' => $not_null,
+            'auto_increment' => $auto_increment,
+            'default' => $default_value,
+            'unsigned' => $unsigned,
+            'zerofill' => $zerofill,
+            'length' => $length
+        );
+    }
+
+    public function addDecimal (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
+        //DECIMAL doesnt support AUTO_INCREMENT
+
+        $this->columns[] = array(
+            'type' => "decimal",
+            'name' => $name,
+            'decimals' => $decimals,
+            'not_null' => $not_null,
+            'default' => $default_value,
+            'unsigned' => $unsigned,
+            'zerofill' => $zerofill,
+            'length' => $length
+        );
+    }
+
+    public function addNumeric (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
+        //DECIMAL doesnt support AUTO_INCREMENT
+
+        $this->columns[] = array(
+            'type' => "numeric",
+            'name' => $name,
+            'decimals' => $decimals,
+            'not_null' => $not_null,
+            'default' => $default_value,
+            'unsigned' => $unsigned,
+            'zerofill' => $zerofill,
+            'length' => $length
+        );
+    }
+
+
     public function generateCreateQuery () : string {
         $tmp_str = "";
 
@@ -296,6 +379,122 @@ class DBTable {
                 //BINARY
                 case 'binary':
                     $line .= "BINARY" . $length_str . $not_null_str . $default_str;
+                    break;
+
+                //TINYINT
+                case 'tinyint':
+                    $line .= "TINYINT" . $length_str . $not_null_str;
+
+                    //add AUTO_INCREMENT if neccessary
+                    if ($column['auto_increment'] == true) {
+                        $line .= " AUTO_INCREMENT";
+                    }
+
+                    //add DEFAULT '<value>' if neccessary
+                    $line .= $default_str;
+
+                    if ($column['unsigned'] == true) {
+                        $line .= " UNSIGNED";
+                    }
+
+                    if ($column['zerofill'] == true) {
+                        $line .= " ZEROFILL";
+                    }
+
+                    break;
+
+                //SMALLINT
+                case 'smallint':
+                    $line .= "SMALLINT" . $length_str . $not_null_str;
+
+                    //add AUTO_INCREMENT if neccessary
+                    if ($column['auto_increment'] == true) {
+                        $line .= " AUTO_INCREMENT";
+                    }
+
+                    //add DEFAULT '<value>' if neccessary
+                    $line .= $default_str;
+
+                    if ($column['unsigned'] == true) {
+                        $line .= " UNSIGNED";
+                    }
+
+                    if ($column['zerofill'] == true) {
+                        $line .= " ZEROFILL";
+                    }
+
+                    break;
+
+                //MEDIUMINT
+                case 'mediumint':
+                    $line .= "SMALLINT" . $length_str . $not_null_str;
+
+                    //add AUTO_INCREMENT if neccessary
+                    if ($column['auto_increment'] == true) {
+                        $line .= " AUTO_INCREMENT";
+                    }
+
+                    //add DEFAULT '<value>' if neccessary
+                    $line .= $default_str;
+
+                    if ($column['unsigned'] == true) {
+                        $line .= " UNSIGNED";
+                    }
+
+                    if ($column['zerofill'] == true) {
+                        $line .= " ZEROFILL";
+                    }
+
+                    break;
+
+                //BIGINT
+                case 'bigint':
+                    $line .= "BIGINT" . $length_str . $not_null_str;
+
+                    //add AUTO_INCREMENT if neccessary
+                    if ($column['auto_increment'] == true) {
+                        $line .= " AUTO_INCREMENT";
+                    }
+
+                    //add DEFAULT '<value>' if neccessary
+                    $line .= $default_str;
+
+                    if ($column['unsigned'] == true) {
+                        $line .= " UNSIGNED";
+                    }
+
+                    if ($column['zerofill'] == true) {
+                        $line .= " ZEROFILL";
+                    }
+
+                    break;
+
+                //DECIMAL
+                case 'decimal':
+                    $line .= "DECIMAL(" . (int) $column['length'] . ", " . (int) $column['decimals'] . ")" . $not_null_str . $default_str;
+
+                    if ($column['unsigned'] == true) {
+                        $line .= " UNSIGNED";
+                    }
+
+                    if ($column['zerofill'] == true) {
+                        $line .= " ZEROFILL";
+                    }
+
+                    break;
+
+                //NUMERIC
+                case 'numeric':
+                    $line .= "NUMERIC(" . (int) $column['length'] . ", " . (int) $column['decimals'] . ")" . $not_null_str . $default_str;
+
+                    if ($column['unsigned'] == true) {
+                        $line .= " UNSIGNED";
+                    }
+
+                    if ($column['zerofill'] == true) {
+                        $line .= " ZEROFILL";
+                    }
+
                     break;
 
                 default:

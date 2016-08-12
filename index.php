@@ -32,6 +32,9 @@ $table->addVarchar("test_text", 255, true, "default value");
 //add text column
 $table->addText("text");
 
+//add decimal with length of 5 and digits after komma of 2
+$table->addDecimal("decimal1", 5, 2);
+
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
 
