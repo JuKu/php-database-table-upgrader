@@ -51,7 +51,7 @@ class DBTable {
     protected $db_driver = null;
 
     public function __construct (string $table_name, DBDriver &$db_driver) {
-        $this->table_name = $table_name;
+        $this->table_name = $this->escape($table_name);
         $this->db_driver = &$db_driver;
     }
 
@@ -1033,9 +1033,28 @@ class DBTable {
         $this->truncate();
     }
 
+    public function check () {
+        //check table
+        return $this->db_driver->getRow("CHECK TABLE `{DBPRAEFIX}" . $this->table_name . "`; ");
+    }
+
+    public function analyze () {
+        //check table
+        return $this->db_driver->getRow("ANALYZE TABLE `{DBPRAEFIX}" . $this->table_name . "`; ");
+    }
+
+    public function optimize () {
+        //optimize table
+        return $this->db_driver->listRows("OPTIMIZE TABLE `{DBPRAEFIX}" . $this->table_name . "`; ");
+    }
+
+    public function flush () {
+        $this->db_driver->query("FLUSH TABLE `{DBPRAEFIX}" . $this->table_name . "`; ");
+    }
+
     public function drop () {
         //drop table
-        $this->db_driver->query("DROP TABLE `" . $this->table_name . "`; ");
+        $this->db_driver->query("DROP TABLE `{DBPRAEFIX}" . $this->table_name . "`; ");
     }
 
     public function escape (string $str) {
