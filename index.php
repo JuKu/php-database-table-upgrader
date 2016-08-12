@@ -56,6 +56,12 @@ $table->addTimestamp("date1", true, "0000-00-00 00:00:00", true);
 //if you only want to add 1 column to primary key, you can use this instead:
 $table->addPrimaryKey("testint");
 
+//add index
+$table->addIndex("test_text");
+
+//add multi column index
+$table->addIndex(array("options", "new_options"), "ix_options");
+
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
 
