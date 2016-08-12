@@ -172,6 +172,18 @@ class DBTable {
         );
     }
 
+    public function addChar (string $name, int $length = 255, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
+        $this->columns[] = array(
+            'type' => "char",
+            'name' => $name,
+            'not_null' => $not_null,
+            'default' => $default_value,
+            'charset' => $charset,
+            'binary' => $binary,
+            'length' => $length
+        );
+    }
+
     public function addTinyText (string $name, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
         $this->columns[] = array(
             'type' => "tinytext",
@@ -444,6 +456,20 @@ class DBTable {
                 //TEXT
                 case 'text':
                     $line .= "TEXT" . $not_null_str . $default_str;
+
+                    if ($column['binary'] == true) {
+                        $line .= " BINARY";
+                    }
+
+                    if ($column['charset'] != null) {
+                        $line .= " CHARACTER SET " . $column['charset'];
+                    }
+
+                    break;
+
+                //CHAR
+                case 'char':
+                    $line .= "CHAR" . $length_str . $not_null_str . $default_str;
 
                     if ($column['binary'] == true) {
                         $line .= " BINARY";

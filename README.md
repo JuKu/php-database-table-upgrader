@@ -14,6 +14,7 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   - INT
   - VARCHAR
   - TEXT
+  - CHAR
   - TINYTEXT
   - MEDIUMTEXT
   - LONGTEXT (4294967295 characters)
