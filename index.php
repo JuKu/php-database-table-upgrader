@@ -59,6 +59,9 @@ $table->addPrimaryKey("testint");
 //add index
 $table->addIndex("test_text");
 
+//add UNIQUE key
+$table->addUnique("decimal1");
+
 //add multi column index
 $table->addIndex(array("options", "new_options"), "ix_options");
 
