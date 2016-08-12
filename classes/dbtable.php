@@ -416,7 +416,7 @@ class DBTable {
 
         if (!empty($this->db_engine)) {
             //add database engine
-            $sql .= " TYPE=" . $this->db_engine;
+            $sql .= " ENGINE=" . $this->db_engine;
         }
 
         //add auto increment value
