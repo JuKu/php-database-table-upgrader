@@ -399,6 +399,24 @@ class DBTable {
         );
     }
 
+    public function addDate (string $name, bool $not_null = false, string $default_value = null) {
+        $this->columns[] = array(
+            'type' => "date",
+            'name' => $name,
+            'not_null' => $not_null,
+            'default' => $default_value
+        );
+    }
+
+    public function addTime (string $name, bool $not_null = false, string $default_value = null) {
+        $this->columns[] = array(
+            'type' => "time",
+            'name' => $name,
+            'not_null' => $not_null,
+            'default' => $default_value
+        );
+    }
+
     public function generateCreateQuery () : string {
         $tmp_str = "";
 
@@ -820,6 +838,18 @@ class DBTable {
                     if ($column['charset'] != null) {
                         $line .= " CHARACTER SET " . $column['charset'];
                     }
+
+                    break;
+
+                //DATE
+                case 'date':
+                    $line .= "DATE" . $not_null_str . $default_str;
+
+                    break;
+
+                //TIME
+                case 'time':
+                    $line .= "TIME" . $not_null_str . $default_str;
 
                     break;
 
