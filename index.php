@@ -44,6 +44,12 @@ $table->addEnum("options", array("option1", "option2", "option3"), true);
 //add ENUM with 3 values, NOT NULL and default value
 $table->addEnum("new_options", array("option1", "option2", "option3"), true, "option1");
 
+//add TIMESTAMP with NOT NULL and default timestamp
+$table->addTimestamp("date", true, "0000-00-00 00:00:00");
+
+//add TIMESTAMP which is set to CURRENT_TIMESTAMP on every update
+$table->addTimestamp("date1", true, "0000-00-00 00:00:00", true);
+
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
 

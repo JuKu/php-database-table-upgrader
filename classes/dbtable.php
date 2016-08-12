@@ -408,9 +408,19 @@ class DBTable {
         );
     }
 
-    public function addTime (string $name, bool $not_null = false, string $default_value = null) {
+    public function addTime (string $name, bool $not_null = false, string $default_value = null, int $fsp = null) {
         $this->columns[] = array(
             'type' => "time",
+            'name' => $name,
+            'not_null' => $not_null,
+            'fsp' => $fsp,
+            'default' => $default_value
+        );
+    }
+
+    public function addYear (string $name, bool $not_null = false, string $default_value = null) {
+        $this->columns[] = array(
+            'type' => "year",
             'name' => $name,
             'not_null' => $not_null,
             'default' => $default_value
@@ -422,6 +432,27 @@ class DBTable {
             'type' => "json",
             'name' => $name,
             'not_null' => $not_null,
+            'default' => $default_value
+        );
+    }
+
+    public function addTimestamp (string $name, bool $not_null = false, string $default_value = null, bool $on_update_current_timestamp = false, int $fsp = null) {
+        $this->columns[] = array(
+            'type' => "timestamp",
+            'name' => $name,
+            'not_null' => $not_null,
+            'on_update_current_timestamp' => $on_update_current_timestamp,
+            'fsp' => $fsp,
+            'default' => $default_value
+        );
+    }
+
+    public function addDateTime (string $name, bool $not_null = false, string $default_value = null, int $fsp = null) {
+        $this->columns[] = array(
+            'type' => "datetime",
+            'name' => $name,
+            'not_null' => $not_null,
+            'fsp' => $fsp,
             'default' => $default_value
         );
     }
@@ -858,13 +889,53 @@ class DBTable {
 
                 //TIME
                 case 'time':
-                    $line .= "TIME" . $not_null_str . $default_str;
+                    $fsp_str = "";
+
+                    if ($column['fsp'] != null) {
+                        $fsp_str = "(" . $column['fsp'] . ")";
+                    }
+
+                    $line .= "TIME" . $fsp_str . $not_null_str . $default_str;
+
+                    break;
+
+                //YEAR
+                case 'year':
+                    $line .= "YEAR" . $not_null_str . $default_str;
 
                     break;
 
                 //JSON
                 case 'json':
                     $line .= "JSON" . $not_null_str . $default_str;
+
+                    break;
+
+                //TIMESTAMP
+                case 'timestamp':
+                    $fsp_str = "";
+
+                    if ($column['fsp'] != null) {
+                        $fsp_str = "(" . $column['fsp'] . ")";
+                    }
+
+                    $line .= "TIMESTAMP" . $fsp_str . $not_null_str . $default_str;
+
+                    if ($column['on_update_current_timestamp'] == true) {
+                        $line .= " ON UPDATE CURRENT_TIMESTAMP";
+                    }
+
+                    break;
+
+                //DATETIME
+                case 'datetime':
+                    $fsp_str = "";
+
+                    if ($column['fsp'] != null) {
+                        $fsp_str = "(" . $column['fsp'] . ")";
+                    }
+
+                    $line .= "DATETIME" . $fsp_str . $not_null_str . $default_str;
 
                     break;
 
