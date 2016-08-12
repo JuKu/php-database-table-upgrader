@@ -14,6 +14,9 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   - INT
   - VARCHAR
   - TEXT
+  - TINYTEXT
+  - MEDIUMTEXT
+  - LONGTEXT (4294967295 characters)
   - BIT
   - BINARY
   - TINYINT
@@ -24,6 +27,7 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   - NUMERIC
   - DOUBLE
   - FLOAT
+  - REAL
   
   - more are Work in Progress
   

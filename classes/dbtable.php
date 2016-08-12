@@ -172,6 +172,39 @@ class DBTable {
         );
     }
 
+    public function addTinyText (string $name, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
+        $this->columns[] = array(
+            'type' => "tinytext",
+            'name' => $name,
+            'not_null' => $not_null,
+            'binary' => $binary,
+            'charset' => $charset,
+            'default' => $default_value
+        );
+    }
+
+    public function addMediumText (string $name, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
+        $this->columns[] = array(
+            'type' => "mediumtext",
+            'name' => $name,
+            'not_null' => $not_null,
+            'binary' => $binary,
+            'charset' => $charset,
+            'default' => $default_value
+        );
+    }
+
+    public function addLongText (string $name, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
+        $this->columns[] = array(
+            'type' => "longtext",
+            'name' => $name,
+            'not_null' => $not_null,
+            'binary' => $binary,
+            'charset' => $charset,
+            'default' => $default_value
+        );
+    }
+
     public function addTinyInt (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
         $this->columns[] = array(
             'type' => "tinyint",
@@ -279,6 +312,29 @@ class DBTable {
             'unsigned' => $unsigned,
             'zerofill' => $zerofill,
             'length' => $length
+        );
+    }
+
+    public function addReal (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
+        $this->columns[] = array(
+            'type' => "real",
+            'name' => $name,
+            'decimals' => $decimals,
+            'not_null' => $not_null,
+            'auto_increment' => $auto_increment,
+            'default' => $default_value,
+            'unsigned' => $unsigned,
+            'zerofill' => $zerofill,
+            'length' => $length
+        );
+    }
+
+    public function addBlob (string $name, bool $not_null = false, string $default_value = null) {
+        $this->columns[] = array(
+            'type' => "blob",
+            'name' => $name,
+            'not_null' => $not_null,
+            'default' => $default_value
         );
     }
 
@@ -565,6 +621,76 @@ class DBTable {
 
                     if ($column['zerofill'] == true) {
                         $line .= " ZEROFILL";
+                    }
+
+                    break;
+
+                //REAL
+                case 'real':
+                    $line .= "REAL(" . (int) $column['length'] . ", " . (int) $column['decimals'] . ")" . $not_null_str;
+
+                    //add AUTO_INCREMENT if neccessary
+                    if ($column['auto_increment'] == true) {
+                        $line .= " AUTO_INCREMENT";
+                    }
+
+                    //add DEFAULT '<value>' if neccessary
+                    $line .= $default_str;
+
+                    if ($column['unsigned'] == true) {
+                        $line .= " UNSIGNED";
+                    }
+
+                    if ($column['zerofill'] == true) {
+                        $line .= " ZEROFILL";
+                    }
+
+                    break;
+
+                //BLOB
+                case 'blob':
+                    $line .= "BLOB" . $not_null_str . $default_str;
+
+                    break;
+
+                //TINYTEXT
+                case 'tinytext':
+                    $line .= "TINYTEXT" . $not_null_str . $default_str;
+
+                    if ($column['binary'] == true) {
+                        $line .= " BINARY";
+                    }
+
+                    if ($column['charset'] != null) {
+                        $line .= " CHARACTER SET " . $column['charset'];
+                    }
+
+                    break;
+
+                //MEDIUMTEXT
+                case 'mediumtext':
+                    $line .= "MEDIUMTEXT" . $not_null_str . $default_str;
+
+                    if ($column['binary'] == true) {
+                        $line .= " BINARY";
+                    }
+
+                    if ($column['charset'] != null) {
+                        $line .= " CHARACTER SET " . $column['charset'];
+                    }
+
+                    break;
+
+                //LONGTEXT
+                case 'longtext':
+                    $line .= "LONGTEXT" . $not_null_str . $default_str;
+
+                    if ($column['binary'] == true) {
+                        $line .= " BINARY";
+                    }
+
+                    if ($column['charset'] != null) {
+                        $line .= " CHARACTER SET " . $column['charset'];
                     }
 
                     break;
