@@ -48,8 +48,11 @@ class DBTable {
      */
     protected $indexes = array();
 
-    public function __construct (string $table_name, DBDriver $db_driver) {
+    protected $db_driver = null;
+
+    public function __construct (string $table_name, DBDriver &$db_driver) {
         $this->table_name = $table_name;
+        $this->db_driver = &$db_driver;
     }
 
     public function setEngine (string $engine_name) {
@@ -1008,6 +1011,31 @@ class DBTable {
         }
 
         return $lines;
+    }
+
+    public function create () {
+        //create table
+        $this->db_driver->query($this->generateCreateQuery());
+    }
+
+    public function upgrade () {
+        //TODO: add code here
+    }
+
+    public function truncate () {
+        $this->db_driver->query("TRUNCATE `" . $this->table_name . "`; ");
+    }
+
+    /**
+     * alias to truncate()
+     */
+    public function cleanUp () {
+        $this->truncate();
+    }
+
+    public function drop () {
+        //drop table
+        $this->db_driver->query("DROP TABLE `" . $this->table_name . "`; ");
     }
 
     public function escape (string $str) {
