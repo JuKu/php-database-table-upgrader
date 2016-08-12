@@ -3,6 +3,9 @@ An database upgrader for upgrade mysql table structures automatically
 
 Version: 0.0.1 alpha
 
+Currently upgrade isnt fully integrated, but table creation should be work.
+Work in Progress!
+
 ## Requirements
   - PHP 7.0.8+
   - MySQL 5.7+
@@ -49,6 +52,7 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   - UNIQUE
   - SPATIAL
   - FULLTEXT
+  - FOREIGN KEY
   
   - more are Work in Progress
   

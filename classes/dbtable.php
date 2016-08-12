@@ -540,6 +540,27 @@ class DBTable {
         );
     }
 
+    public function addForeignKey ($columns, string $reference_table_name, $reference_columns, string $index_name = null, string $on_update = null, string $on_delete = null) {
+        if ($index_name == null) {
+            if (!is_array($columns)) {
+                $index_name = "ix_" . $columns;
+            } else {
+                throw new UnsupportedDataTypeException("Multi Column indexes require an name! addFulltext(<columns>, <index index>)");
+                //$index_name = "ix_" . md5(serialize($columns))
+            }
+        }
+
+        $this->indexes[$index_name] = array(
+            'type' => "foreign",
+            'name' => $index_name,
+            'reference_table_name' => $reference_table_name,
+            'reference_columns' => $reference_columns,
+            'on_update' => $on_update,
+            'on_delete' => $on_delete,
+            'columns' => $columns
+        );
+    }
+
     public function generateCreateQuery () : string {
         $tmp_str = "";
 
@@ -734,6 +755,66 @@ class DBTable {
                         $lines[] = "FULLTEXT (" . $columns_str . ")";
                     } else {
                         $lines[] = "FULLTEXT `" . $params['name'] . "`(" . $columns_str . ")";
+                    }
+
+                    break;
+
+                case 'foreign':
+                    //INDEX
+                    $columns_str = "";
+                    $references_str = "";
+
+                    if (is_array($params['columns'])) {
+                        $columns = array();
+
+                        foreach ($params['columns'] as $column=>$params1) {
+                            if (is_array($params1)) {
+                                //column name with length
+                                $columns[] = "`" . $params1['column'] . "`(" . (int) $params1['length'] . ")";
+                            } else {
+                                $columns[] = "`" . $params1 . "`";
+                            }
+                        }
+
+                        $columns_str = implode(", ", $columns);
+                    } else {
+                        //only 1 column
+                        $columns_str = "`" . utf8_encode(htmlentities($params['columns'])) . "`";
+                    }
+
+                    if (is_array($params['columns'])) {
+                        $columns = array();
+
+                        foreach ($params['reference_columns'] as $column=>$params1) {
+                            if (is_array($params1)) {
+                                //column name with length
+                                $columns[] = "`" . $params1['column'] . "`(" . (int) $params1['length'] . ")";
+                            } else {
+                                $columns[] = "`" . $params1 . "`";
+                            }
+                        }
+
+                        $references_str = implode(", ", $columns);
+                    } else {
+                        //only 1 column
+                        $references_str = "`" . utf8_encode(htmlentities($params['columns'])) . "`";
+                    }
+
+                    $on_update_str = "";
+                    $on_delete_str = "";
+
+                    if ($params['on_update'] != null) {
+                        $on_update_str = " ON UPDATE " . strtoupper($params['on_update']);
+                    }
+
+                    if ($params['on_delete'] != null) {
+                        $on_update_str = " ON DELETE " . strtoupper($params['on_delete']);
+                    }
+
+                    if (empty($params['name'])) {
+                        $lines[] = "FOREIGN KEY (" . $columns_str . ") REFERENCES `" . $params['reference_table_name'] . "`(" . $references_str . ")" . $on_delete_str . $on_update_str;
+                    } else {
+                        $lines[] = "FOREIGN KEY `" . $params['name'] . "`(" . $columns_str . ") REFERENCES `" . $params['reference_table_name'] . "`(" . $references_str . ")" . $on_delete_str . $on_update_str;
                     }
 
                     break;
