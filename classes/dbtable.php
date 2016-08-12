@@ -506,6 +506,23 @@ class DBTable {
         );
     }
 
+    public function addSpatial ($columns, string $index_name = null) {
+        if ($index_name == null) {
+            if (!is_array($columns)) {
+                $index_name = "sp_" . $columns;
+            } else {
+                throw new UnsupportedDataTypeException("Multi Column indexes require an name! addUnique(<columns>, <index index>)");
+                //$index_name = "ix_" . md5(serialize($columns))
+            }
+        }
+
+        $this->indexes[$index_name] = array(
+            'type' => "spatial",
+            'name' => $index_name,
+            'columns' => $columns
+        );
+    }
+
     public function generateCreateQuery () : string {
         $tmp_str = "";
 
@@ -640,6 +657,36 @@ class DBTable {
                         $lines[] = "UNIQUE (" . $columns_str . ")";
                     } else {
                         $lines[] = "UNIQUE `" . $params['name'] . "`(" . $columns_str . ")";
+                    }
+
+                    break;
+
+                case 'spatial':
+                    //INDEX
+                    $columns_str = "";
+
+                    if (is_array($params['columns'])) {
+                        $columns = array();
+
+                        foreach ($params['columns'] as $column=>$params1) {
+                            if (is_array($params1)) {
+                                //column name with length
+                                $columns[] = "`" . $params1['column'] . "`(" . (int) $params1['length'] . ")";
+                            } else {
+                                $columns[] = "`" . $params1 . "`";
+                            }
+                        }
+
+                        $columns_str = implode(", ", $columns);
+                    } else {
+                        //only 1 column
+                        $columns_str = "`" . utf8_encode(htmlentities($params['columns'])) . "`";
+                    }
+
+                    if (empty($params['name'])) {
+                        $lines[] = "SPATIAL (" . $columns_str . ")";
+                    } else {
+                        $lines[] = "SPATIAL `" . $params['name'] . "`(" . $columns_str . ")";
                     }
 
                     break;
