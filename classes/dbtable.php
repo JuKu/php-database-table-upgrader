@@ -350,6 +350,32 @@ class DBTable {
         );
     }
 
+    public function addTinyBlob (string $name, bool $not_null = false, string $default_value = null) {
+        $this->columns[] = array(
+            'type' => "tinyblob",
+            'name' => $name,
+            'not_null' => $not_null,
+            'default' => $default_value
+        );
+    }
+
+    public function addMediumBlob (string $name, bool $not_null = false, string $default_value = null) {
+        $this->columns[] = array(
+            'type' => "mediumblob",
+            'name' => $name,
+            'not_null' => $not_null,
+            'default' => $default_value
+        );
+    }
+
+    public function addLongBlob (string $name, bool $not_null = false, string $default_value = null) {
+        $this->columns[] = array(
+            'type' => "longblob",
+            'name' => $name,
+            'not_null' => $not_null,
+            'default' => $default_value
+        );
+    }
 
     public function generateCreateQuery () : string {
         $tmp_str = "";
@@ -718,6 +744,24 @@ class DBTable {
                     if ($column['charset'] != null) {
                         $line .= " CHARACTER SET " . $column['charset'];
                     }
+
+                    break;
+
+                //TINYBLOB
+                case 'tinyblob':
+                    $line .= "TINYBLOB" . $not_null_str . $default_str;
+
+                    break;
+
+                //MEDIUMBLOB
+                case 'mediumblob':
+                    $line .= "MEDIUMBLOB" . $not_null_str . $default_str;
+
+                    break;
+
+                //LONGBLOB
+                case 'longblob':
+                    $line .= "LONGBLOB" . $not_null_str . $default_str;
 
                     break;
 
