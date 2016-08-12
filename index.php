@@ -38,6 +38,12 @@ $table->addDecimal("decimal1", 5, 2);
 //add DOUBLE with length of 5, 2 and NOT NULL
 $table->addDouble("double1", 5, 2, true);
 
+//add ENUM with 3 values and NOT NULL
+$table->addEnum("options", array("option1", "option2", "option3"), true);
+
+//add ENUM with 3 values, NOT NULL and default value
+$table->addEnum("options", array("option1", "option2", "option3"), true, "option1");
+
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
 
