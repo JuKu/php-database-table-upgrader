@@ -43,6 +43,11 @@ class DBTable {
      */
     protected $columns = array();
 
+    /**
+     * indexes of table
+     */
+    protected $indexes = array();
+
     public function __construct (string $table_name, DBDriver $db_driver) {
         $this->table_name = $table_name;
     }
@@ -457,6 +462,13 @@ class DBTable {
         );
     }
 
+    public function addPrimaryKey (mixed $columns) {
+        $this->indexes['primary'] = array(
+            'type' => "primary",
+            'columns' => $columns
+        );
+    }
+
     public function generateCreateQuery () : string {
         $tmp_str = "";
 
@@ -469,6 +481,9 @@ class DBTable {
 
         //add coloums
         $sql .= $this->generateColoumQuery();
+
+        //add indexes
+        $sql .= $this->generateIndexQuery();
 
         $sql .= ")";
 
@@ -498,6 +513,52 @@ class DBTable {
 
         //build sql query string
         return implode(",\r\n", $lines) . "\r\n";
+    }
+
+    protected function generateIndexQuery () : string {
+        //check, if no index is set
+        if (count($this->indexes) == 0) {
+            return "";
+        }
+
+        $lines = array();
+
+        foreach ($this->indexes as $name=>$params) {
+            switch ($params['type']) {
+                case 'primary':
+                    //PRIMARY KEY
+                    $columns_str = "";
+
+                    if (is_array($params['columns'])) {
+                        $columns = array();
+
+                        foreach ($params['columns'] as $column=>$params1) {
+                            if (is_array($params1)) {
+                                //column name with length
+                                $columns[] = "`" . $params1['column'] . "`(" . (int) $params1['length'] . ")";
+                            } else {
+                                $columns[] = "`" . $params1 . "`";
+                            }
+                        }
+
+                        $columns_str = implode(", ", $columns);
+                    } else {
+                        //only 1 column
+                        $columns_str = "`" . utf8_encode(htmlentities($params['columns'])) . "`";
+                    }
+
+                    $lines[] = "PRIMARY KEY (" . $columns_str . ")";
+
+                    break;
+
+                default:
+                    throw new UnsupportedDataTypeException("index / key isnt supported. " . serialize($params));
+
+                    break;
+            }
+        }
+
+        return ",\r\n" . implode(",\r\n", $lines);
     }
 
     protected function getColoumLines () : array {
@@ -960,6 +1021,10 @@ class DBTable {
     public static function getTableStructure (string $table_name, DBDriver $dbDriver) {
         //https://dev.mysql.com/doc/refman/5.5/en/creating-tables.html
         return $dbDriver->listRows("DESCRIBE `{DBPRAEFIX}" . $table_name . "`; ");
+    }
+
+    public static function listIndexes (string $table_name, DBDriver $dbDriver) {
+        return $dbDriver->listRows("SHOW INDEX FROM `{DBPRAEFIX}" . $table_name . "`; ");
     }
 
 }

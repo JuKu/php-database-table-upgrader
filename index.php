@@ -50,6 +50,9 @@ $table->addTimestamp("date", true, "0000-00-00 00:00:00");
 //add TIMESTAMP which is set to CURRENT_TIMESTAMP on every update
 $table->addTimestamp("date1", true, "0000-00-00 00:00:00", true);
 
+//add primary key
+$table->addPrimaryKey(array("id", "testint"));
+
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
 
