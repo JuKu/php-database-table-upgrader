@@ -462,7 +462,7 @@ class DBTable {
         );
     }
 
-    public function addPrimaryKey (mixed $columns) {
+    public function addPrimaryKey ($columns) {
         $this->indexes['primary'] = array(
             'type' => "primary",
             'columns' => $columns
