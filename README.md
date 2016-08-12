@@ -42,6 +42,10 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   - DATETIME
   - JSON
   
+## Supported Keys and Indexes
+
+  - PRIMARY KEY
+  
   - more are Work in Progress
   
 ## Example
@@ -78,4 +82,24 @@ CREATE TABLE `{DBPRAEFIX}test` IF NOT EXISTS (
 `test_text` VARCHAR(255) NOT NULL DEFAULT 'default value',
 `text` TEXT
 ) TYPE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+### How to add an PRIMARY KEY
+
+PRIMARY with only 1 column:
+```php
+//add primary key
+$table->addPrimaryKey("column_name");
+```
+
+PRIMARY KEY with more than 1 column:
+```php
+//add primary key
+$table->addPrimaryKey(array("id", "testint"));
+```
+
+Because PRIMARY KEYS are limited to specific length, you can also specifiy length of columns used in PRIMARY KEY:
+```php
+//add primary key
+$table->addPrimaryKey(array("id", "testint", array('column' => "test_text", 'length' => 50)));
 ```
