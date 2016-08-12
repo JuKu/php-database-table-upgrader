@@ -51,7 +51,7 @@ $table->addTimestamp("date", true, "0000-00-00 00:00:00");
 $table->addTimestamp("date1", true, "0000-00-00 00:00:00", true);
 
 //add primary key
-$table->addPrimaryKey(array("id", "testint"));
+$table->addPrimaryKey(array("id", "testint", array('column' => "test_text", 'length' => 50)));
 
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
