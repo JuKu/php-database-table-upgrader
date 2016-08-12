@@ -1049,6 +1049,7 @@ class DBTable {
     }
 
     public function flush () {
+        //flush table
         $this->db_driver->query("FLUSH TABLE `{DBPRAEFIX}" . $this->table_name . "`; ");
     }
 
