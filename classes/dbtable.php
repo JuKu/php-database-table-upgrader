@@ -485,7 +485,7 @@ class DBTable {
         //add indexes
         $sql .= $this->generateIndexQuery();
 
-        $sql .= ")";
+        $sql .= "\r\n)";
 
         if (!empty($this->db_engine)) {
             //add database engine
@@ -512,7 +512,7 @@ class DBTable {
         $lines = $this->getColoumLines();
 
         //build sql query string
-        return implode(",\r\n", $lines) . "\r\n";
+        return implode(",\r\n", $lines) . "";
     }
 
     protected function generateIndexQuery () : string {
