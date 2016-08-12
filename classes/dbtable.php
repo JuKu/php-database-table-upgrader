@@ -240,13 +240,41 @@ class DBTable {
     }
 
     public function addNumeric (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
-        //DECIMAL doesnt support AUTO_INCREMENT
+        //NUMERIC doesnt support AUTO_INCREMENT
 
         $this->columns[] = array(
             'type' => "numeric",
             'name' => $name,
             'decimals' => $decimals,
             'not_null' => $not_null,
+            'default' => $default_value,
+            'unsigned' => $unsigned,
+            'zerofill' => $zerofill,
+            'length' => $length
+        );
+    }
+
+    public function addDouble (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
+        $this->columns[] = array(
+            'type' => "double",
+            'name' => $name,
+            'decimals' => $decimals,
+            'not_null' => $not_null,
+            'auto_increment' => $auto_increment,
+            'default' => $default_value,
+            'unsigned' => $unsigned,
+            'zerofill' => $zerofill,
+            'length' => $length
+        );
+    }
+
+    public function addFloat (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
+        $this->columns[] = array(
+            'type' => "float",
+            'name' => $name,
+            'decimals' => $decimals,
+            'not_null' => $not_null,
+            'auto_increment' => $auto_increment,
             'default' => $default_value,
             'unsigned' => $unsigned,
             'zerofill' => $zerofill,
@@ -486,6 +514,50 @@ class DBTable {
                 //NUMERIC
                 case 'numeric':
                     $line .= "NUMERIC(" . (int) $column['length'] . ", " . (int) $column['decimals'] . ")" . $not_null_str . $default_str;
+
+                    if ($column['unsigned'] == true) {
+                        $line .= " UNSIGNED";
+                    }
+
+                    if ($column['zerofill'] == true) {
+                        $line .= " ZEROFILL";
+                    }
+
+                    break;
+
+                //DOUBLE
+                case 'double':
+                    $line .= "DOUBLE(" . (int) $column['length'] . ", " . (int) $column['decimals'] . ")" . $not_null_str;
+
+                    //add AUTO_INCREMENT if neccessary
+                    if ($column['auto_increment'] == true) {
+                        $line .= " AUTO_INCREMENT";
+                    }
+
+                    //add DEFAULT '<value>' if neccessary
+                    $line .= $default_str;
+
+                    if ($column['unsigned'] == true) {
+                        $line .= " UNSIGNED";
+                    }
+
+                    if ($column['zerofill'] == true) {
+                        $line .= " ZEROFILL";
+                    }
+
+                    break;
+
+                //FLOAT
+                case 'float':
+                    $line .= "FLOAT(" . (int) $column['length'] . ", " . (int) $column['decimals'] . ")" . $not_null_str;
+
+                    //add AUTO_INCREMENT if neccessary
+                    if ($column['auto_increment'] == true) {
+                        $line .= " AUTO_INCREMENT";
+                    }
+
+                    //add DEFAULT '<value>' if neccessary
+                    $line .= $default_str;
 
                     if ($column['unsigned'] == true) {
                         $line .= " UNSIGNED";

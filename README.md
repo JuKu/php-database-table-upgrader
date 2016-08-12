@@ -22,6 +22,8 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   - BIGINT
   - DECIMAL
   - NUMERIC
+  - DOUBLE
+  - FLOAT
   
   - more are Work in Progress
   
