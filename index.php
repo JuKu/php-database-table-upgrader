@@ -35,6 +35,9 @@ $table->addText("text");
 //add decimal with length of 5 and digits after komma of 2
 $table->addDecimal("decimal1", 5, 2);
 
+//add DOUBLE
+$table->addDouble("double1", 5, 2);
+
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
 
