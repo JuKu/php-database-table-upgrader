@@ -377,6 +377,28 @@ class DBTable {
         );
     }
 
+    public function addEnum (string $name, array $values = array(), bool $not_null = false, string $default_value = null, string $charset = null) {
+        $this->columns[] = array(
+            'type' => "enum",
+            'name' => $name,
+            'values' => $values,
+            'not_null' => $not_null,
+            'default' => $default_value,
+            'charset' => $charset
+        );
+    }
+
+    public function addSet (string $name, array $values = array(), bool $not_null = false, string $default_value = null, string $charset = null) {
+        $this->columns[] = array(
+            'type' => "set",
+            'name' => $name,
+            'values' => $values,
+            'not_null' => $not_null,
+            'default' => $default_value,
+            'charset' => $charset
+        );
+    }
+
     public function generateCreateQuery () : string {
         $tmp_str = "";
 
@@ -762,6 +784,30 @@ class DBTable {
                 //LONGBLOB
                 case 'longblob':
                     $line .= "LONGBLOB" . $not_null_str . $default_str;
+
+                    break;
+
+                //ENUM
+                case 'enum':
+                    $options_str = implode(",", $column['values']);
+
+                    $line .= "ENUM(" . $options_str . ")" . $not_null_str . $default_str;
+
+                    if ($column['charset'] != null) {
+                        $line .= " CHARACTER SET " . $column['charset'];
+                    }
+
+                    break;
+
+                //SET
+                case 'set':
+                    $options_str = implode(",", $column['values']);
+
+                    $line .= "SET(" . $options_str . ")" . $not_null_str . $default_str;
+
+                    if ($column['charset'] != null) {
+                        $line .= " CHARACTER SET " . $column['charset'];
+                    }
 
                     break;
 

@@ -33,6 +33,8 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   - TINYBLOB
   - MEDIUMBLOB
   - LONGBLOB
+  - ENUM
+  - SET
   
   - more are Work in Progress
   
