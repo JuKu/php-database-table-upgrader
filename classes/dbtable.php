@@ -407,7 +407,7 @@ class DBTable {
         }
 
         //http://dev.mysql.com/doc/refman/5.7/en/create-table.html
-        $sql = "CREATE" . $tmp_str . " TABLE `{DBPRAEFIX}" . $this->escape($this->table_name) . "` IF NOT EXISTS (\r\n";
+        $sql = "CREATE" . $tmp_str . " TABLE IF NOT EXISTS `{DBPRAEFIX}" . $this->escape($this->table_name) . "` (\r\n";
 
         //add coloums
         $sql .= $this->generateColoumQuery();
@@ -789,7 +789,13 @@ class DBTable {
 
                 //ENUM
                 case 'enum':
-                    $options_str = implode(",", $column['values']);
+                    $options = array();
+
+                    foreach ($column['values'] as $value) {
+                        $options[] = "'" . $value . "'";
+                    }
+
+                    $options_str = implode(",", $options);
 
                     $line .= "ENUM(" . $options_str . ")" . $not_null_str . $default_str;
 
@@ -801,7 +807,13 @@ class DBTable {
 
                 //SET
                 case 'set':
-                    $options_str = implode(",", $column['values']);
+                    $options = array();
+
+                    foreach ($column['values'] as $value) {
+                        $options[] = "'" . $value . "'";
+                    }
+
+                    $options_str = implode(",", $options);
 
                     $line .= "SET(" . $options_str . ")" . $not_null_str . $default_str;
 
