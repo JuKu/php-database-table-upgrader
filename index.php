@@ -62,6 +62,9 @@ $table->addIndex("test_text");
 //add UNIQUE key
 $table->addUnique("decimal1");
 
+//add FULLTEXT index
+$table->addFulltext("text");
+
 //add multi column index
 $table->addIndex(array("options", "new_options"), "ix_options");
 
