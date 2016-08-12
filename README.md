@@ -35,6 +35,8 @@ If you want to use the build-in MySQLDriver, you have to copy config/mysql.examp
   - LONGBLOB
   - ENUM
   - SET
+  - DATE
+  - TIME
   
   - more are Work in Progress
   
