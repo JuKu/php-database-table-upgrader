@@ -42,7 +42,7 @@ $table->addDouble("double1", 5, 2, true);
 $table->addEnum("options", array("option1", "option2", "option3"), true);
 
 //add ENUM with 3 values, NOT NULL and default value
-$table->addEnum("options", array("option1", "option2", "option3"), true, "option1");
+$table->addEnum("new_options", array("option1", "option2", "option3"), true, "option1");
 
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
