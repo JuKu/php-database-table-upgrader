@@ -16,7 +16,7 @@ class MySQLDriver implements DBDriver {
     protected $options = array();
 
     protected $queries = 0;
-    protected $query_history = array();
+    protected static $query_history = array();
 
     protected $conn = null;
 
@@ -64,7 +64,7 @@ class MySQLDriver implements DBDriver {
         }
 
         //add query to history
-        $this->query_history[] = array('query' => $sql, 'params' => $params);
+        self::$query_history[] = array('query' => $sql, 'params' => $params);
 
         //increment query counter
         $this->queries++;
@@ -140,7 +140,7 @@ class MySQLDriver implements DBDriver {
 
     public function query($sql) : PDOStatement {
         //add query to history
-        $this->query_history[] = array('query' => $sql);
+        self::$query_history[] = array('query' => $sql);
 
         //increment query counter
         $this->queries++;
@@ -167,7 +167,7 @@ class MySQLDriver implements DBDriver {
         }
 
         //add query to history
-        $this->query_history[] = array('query' => $sql, 'params' => $params);
+        self::$query_history[] = array('query' => $sql, 'params' => $params);
 
         //increment query counter
         $this->queries++;
@@ -184,7 +184,7 @@ class MySQLDriver implements DBDriver {
         $stmt = $this->prepare($sql);
 
         //add query to history
-        $this->query_history[] = array('query' => $sql, 'params' => $params);
+        self::$query_history[] = array('query' => $sql, 'params' => $params);
 
         //increment query counter
         $this->queries++;
@@ -239,6 +239,6 @@ class MySQLDriver implements DBDriver {
     }
 
     public function listQueryHistory() : array {
-        return $this->query_history;
+        return self::$query_history;
     }
 }
