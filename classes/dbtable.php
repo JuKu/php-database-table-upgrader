@@ -1380,7 +1380,7 @@ class DBTable {
                 //there are other attributes available
 
                 //iterate through datatype attributes, for example: int(10) unsigned zerofill
-                for ($i = 1; i < count($datatype_attributes); $i++) {
+                for ($i = 1; $i < count($datatype_attributes); $i++) {
                     switch ($datatype_attributes[$i]) {
                         case 'unsigned':
                             $unsigned = true;
