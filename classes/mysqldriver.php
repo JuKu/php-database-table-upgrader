@@ -241,4 +241,8 @@ class MySQLDriver implements DBDriver {
     public function listQueryHistory() : array {
         return self::$query_history;
     }
+
+    public function getDatabaseName() : string {
+        return $this->database;
+    }
 }

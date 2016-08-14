@@ -42,6 +42,8 @@ interface DBDriver {
 
     public function listQueryHistory () : array;
 
+    public function getDatabaseName () : string;
+
     public function close ();
 
 }
