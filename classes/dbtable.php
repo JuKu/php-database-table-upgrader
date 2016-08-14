@@ -1278,11 +1278,17 @@ class DBTable {
         return $lines;
     }
 
+    /**
+     * create table structure in database, if table not exists
+     */
     public function create () {
         //create table
         $this->db_driver->query($this->generateCreateQuery());
     }
 
+    /**
+     * upgrades table structure in database, or if table not exists, creates table
+     */
     public function upgrade () {
         //TODO: add code here
     }
