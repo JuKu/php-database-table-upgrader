@@ -83,6 +83,7 @@ class MySQLDriver implements DBDriver {
 
         //execute query
         try {
+            echo "execute query: " . $sql;
             return $stmt->execute();
         } catch (PDOException $e) {
             echo "An Error oncurred. Please contact administrator.<br /><br /><small>If you are the administrator: You can enable DEBUG MODE in LIB_PATH/store/settings/settings.php .</small>";
