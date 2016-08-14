@@ -83,8 +83,13 @@ class MySQLDriver implements DBDriver {
 
         //execute query
         try {
-            echo "execute query: " . $sql;
-            return $stmt->execute();
+            $res = $stmt->execute();
+
+            if (!$res) {
+                print_r($stmt->errorInfo());
+            }
+
+            return $res;
         } catch (PDOException $e) {
             echo "An Error oncurred. Please contact administrator.<br /><br /><small>If you are the administrator: You can enable DEBUG MODE in LIB_PATH/store/settings/settings.php .</small>";
 
@@ -226,13 +231,17 @@ class MySQLDriver implements DBDriver {
     }
 
     public function prepare($sql) : PDOStatement {
-        echo "prepare: " . $sql;
         $sql = $this->getQuery($sql);
 
         if (isset($this->prepared_cache[md5($sql)])) {
             return $this->prepared_cache[md5($sql)];
         } else {
             $stmt = $this->conn->prepare($sql);
+
+            if (!$stmt) {
+                echo "\nPDO::errorInfo():\n";
+                print_r($this->conn->errorInfo());
+            }
 
             //put prepared statement into cache
             $this->prepared_cache[md5($sql)] = $stmt;

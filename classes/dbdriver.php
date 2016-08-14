@@ -44,6 +44,8 @@ interface DBDriver {
 
     public function getDatabaseName () : string;
 
+    public function getErrorInfo () : string;
+
     public function close ();
 
 }
