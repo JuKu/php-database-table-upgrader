@@ -76,6 +76,4 @@ $table->create();
 
 echo "Database: " . $dbDriver->getDatabaseName() . "<br /><br />";
 
-var_dump($dbDriver->listQueryHistory());
-
 ?>
