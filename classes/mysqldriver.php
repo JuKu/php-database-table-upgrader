@@ -256,4 +256,8 @@ class MySQLDriver implements DBDriver {
     public function getDatabaseName() : string {
         return $this->database;
     }
+
+    public function getErrorInfo() : array {
+        return $this->conn->errorInfo();
+    }
 }
