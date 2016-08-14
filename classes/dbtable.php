@@ -1460,21 +1460,21 @@ class DBTable {
         return utf8_encode(htmlentities($str));
     }
 
-    public static function listTables (DBDriver $dbDriver) {
+    public static function listTables (DBDriver &$dbDriver) {
         return $dbDriver->listRows("SHOW TABLES; ");
     }
 
-    public static function getTableStructure (string $table_name, DBDriver $dbDriver) {
+    public static function getTableStructure (string $table_name, DBDriver &$dbDriver) {
         //https://dev.mysql.com/doc/refman/5.5/en/creating-tables.html
         return $dbDriver->listRows("DESCRIBE `{DBPRAEFIX}" . $table_name . "`; ");
     }
 
-    public static function getTableStructureByInformationSchema (string $table_name, DBDriver $dbDriver) {
+    public static function getTableStructureByInformationSchema (string $table_name, DBDriver &$dbDriver) {
         //https://dev.mysql.com/doc/refman/5.5/en/creating-tables.html
-        return $dbDriver->listRows("SELECT * FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA` = '" . $dbDriver->getDatabaseName() . "' AND `TABLE_NAME` = `{DBPRAEFIX}" . $table_name . "`; ", array());
+        return $dbDriver->listRows("SELECT * FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA` = '" . $dbDriver->getDatabaseName() . "' AND `TABLE_NAME` = `{DBPRAEFIX}" . $table_name . "`; ", array(), true);
     }
 
-    public static function listIndexes (string $table_name, DBDriver $dbDriver) {
+    public static function listIndexes (string $table_name, DBDriver &$dbDriver) {
         return $dbDriver->listRows("SHOW INDEX FROM `{DBPRAEFIX}" . $table_name . "`; ");
     }
 
