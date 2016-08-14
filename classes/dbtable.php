@@ -1312,6 +1312,7 @@ class DBTable {
             $decimals = null;
 
             $datatype = "";
+            $values = array();
 
             $array1 = explode("(", $type);
             $datatype = strtolower($array1[0]);
@@ -1322,6 +1323,14 @@ class DBTable {
 
                 if (strcmp($datatype, "enum") || strcmp($datatype, "set")) {
                     //ENUM or SET, options are available
+
+                    //get options
+                    foreach ($array3 as $value) {
+                        $value = str_replace("'", "", $value);
+                        $value = str_replace("'", "", $value);
+
+                        $values[] = $value;
+                    }
                 } else {
                     if (count($array3) > 1) {
                         //length and decimals are available
@@ -1338,7 +1347,8 @@ class DBTable {
                 'type' => $datatype,
                 'name' => $name,
                 'length' => $length,
-                'decimals' => $decimals
+                'decimals' => $decimals,
+                'values' => $values//only for enum and set
             );
         }
 
