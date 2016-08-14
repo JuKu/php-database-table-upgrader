@@ -226,6 +226,7 @@ class MySQLDriver implements DBDriver {
     }
 
     public function prepare($sql) : PDOStatement {
+        echo "prepare: " . $sql;
         $sql = $this->getQuery($sql);
 
         if (isset($this->prepared_cache[md5($sql)])) {
