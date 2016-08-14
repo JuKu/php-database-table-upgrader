@@ -1341,6 +1341,8 @@ class DBTable {
                         $length = (int) $array3[0];
                     }
                 }
+            } else {
+                //no length set
             }
 
             $columns[$name] = array(
