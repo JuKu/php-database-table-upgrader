@@ -98,7 +98,7 @@ class DBTable {
      * @param $zerofill true, if values should be filled with 0, if value length isnt length of column
      */
     public function addInt (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "int",
             'name' => $name,
             'not_null' => $not_null,
@@ -125,7 +125,7 @@ class DBTable {
      * @param $zerofill true, if values should be filled with 0, if value length isnt length of column
      */
     public function addUnsignedInteger (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $zerofill = false) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "int",
             'name' => $name,
             'not_null' => $not_null,
@@ -138,7 +138,7 @@ class DBTable {
     }
 
     public function addVarchar (string $name, int $length = 255, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "varchar",
             'name' => $name,
             'not_null' => $not_null,
@@ -150,7 +150,7 @@ class DBTable {
     }
 
     public function addBit (string $name, int $length = null, bool $not_null = false, string $default_value = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "bit",
             'name' => $name,
             'not_null' => $not_null,
@@ -160,7 +160,7 @@ class DBTable {
     }
 
     public function addBinary (string $name, int $length = null, bool $not_null = false, string $default_value = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "binary",
             'name' => $name,
             'not_null' => $not_null,
@@ -170,7 +170,7 @@ class DBTable {
     }
 
     public function addText (string $name, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "text",
             'name' => $name,
             'not_null' => $not_null,
@@ -181,7 +181,7 @@ class DBTable {
     }
 
     public function addChar (string $name, int $length = 255, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "char",
             'name' => $name,
             'not_null' => $not_null,
@@ -193,7 +193,7 @@ class DBTable {
     }
 
     public function addTinyText (string $name, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "tinytext",
             'name' => $name,
             'not_null' => $not_null,
@@ -204,7 +204,7 @@ class DBTable {
     }
 
     public function addMediumText (string $name, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "mediumtext",
             'name' => $name,
             'not_null' => $not_null,
@@ -215,7 +215,7 @@ class DBTable {
     }
 
     public function addLongText (string $name, bool $not_null = false, string $default_value = null, bool $binary = false, string $charset = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "longtext",
             'name' => $name,
             'not_null' => $not_null,
@@ -226,7 +226,7 @@ class DBTable {
     }
 
     public function addTinyInt (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "tinyint",
             'name' => $name,
             'not_null' => $not_null,
@@ -239,7 +239,7 @@ class DBTable {
     }
 
     public function addSmallInt (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "smallint",
             'name' => $name,
             'not_null' => $not_null,
@@ -252,7 +252,7 @@ class DBTable {
     }
 
     public function addMediumInt (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "mediumint",
             'name' => $name,
             'not_null' => $not_null,
@@ -265,7 +265,7 @@ class DBTable {
     }
 
     public function addBigInt (string $name, int $length = null, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "bigint",
             'name' => $name,
             'not_null' => $not_null,
@@ -280,7 +280,7 @@ class DBTable {
     public function addDecimal (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
         //DECIMAL doesnt support AUTO_INCREMENT
 
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "decimal",
             'name' => $name,
             'decimals' => $decimals,
@@ -295,7 +295,7 @@ class DBTable {
     public function addNumeric (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
         //NUMERIC doesnt support AUTO_INCREMENT
 
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "numeric",
             'name' => $name,
             'decimals' => $decimals,
@@ -308,7 +308,7 @@ class DBTable {
     }
 
     public function addDouble (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "double",
             'name' => $name,
             'decimals' => $decimals,
@@ -322,7 +322,7 @@ class DBTable {
     }
 
     public function addFloat (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "float",
             'name' => $name,
             'decimals' => $decimals,
@@ -336,7 +336,7 @@ class DBTable {
     }
 
     public function addReal (string $name, int $length = 5, int $decimals = 2, bool $not_null = false, bool $auto_increment = false, int $default_value = null, bool $unsigned = false, bool $zerofill = false) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "real",
             'name' => $name,
             'decimals' => $decimals,
@@ -350,7 +350,7 @@ class DBTable {
     }
 
     public function addBlob (string $name, bool $not_null = false, string $default_value = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "blob",
             'name' => $name,
             'not_null' => $not_null,
@@ -359,7 +359,7 @@ class DBTable {
     }
 
     public function addTinyBlob (string $name, bool $not_null = false, string $default_value = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "tinyblob",
             'name' => $name,
             'not_null' => $not_null,
@@ -368,7 +368,7 @@ class DBTable {
     }
 
     public function addMediumBlob (string $name, bool $not_null = false, string $default_value = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "mediumblob",
             'name' => $name,
             'not_null' => $not_null,
@@ -377,7 +377,7 @@ class DBTable {
     }
 
     public function addLongBlob (string $name, bool $not_null = false, string $default_value = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "longblob",
             'name' => $name,
             'not_null' => $not_null,
@@ -386,7 +386,7 @@ class DBTable {
     }
 
     public function addEnum (string $name, array $values = array(), bool $not_null = false, string $default_value = null, string $charset = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "enum",
             'name' => $name,
             'values' => $values,
@@ -397,7 +397,7 @@ class DBTable {
     }
 
     public function addSet (string $name, array $values = array(), bool $not_null = false, string $default_value = null, string $charset = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "set",
             'name' => $name,
             'values' => $values,
@@ -408,7 +408,7 @@ class DBTable {
     }
 
     public function addDate (string $name, bool $not_null = false, string $default_value = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "date",
             'name' => $name,
             'not_null' => $not_null,
@@ -417,7 +417,7 @@ class DBTable {
     }
 
     public function addTime (string $name, bool $not_null = false, string $default_value = null, int $fsp = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "time",
             'name' => $name,
             'not_null' => $not_null,
@@ -427,7 +427,7 @@ class DBTable {
     }
 
     public function addYear (string $name, bool $not_null = false, string $default_value = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "year",
             'name' => $name,
             'not_null' => $not_null,
@@ -436,7 +436,7 @@ class DBTable {
     }
 
     public function addJSON (string $name, bool $not_null = false, string $default_value = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "json",
             'name' => $name,
             'not_null' => $not_null,
@@ -445,7 +445,7 @@ class DBTable {
     }
 
     public function addTimestamp (string $name, bool $not_null = false, string $default_value = null, bool $on_update_current_timestamp = false, int $fsp = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "timestamp",
             'name' => $name,
             'not_null' => $not_null,
@@ -456,7 +456,7 @@ class DBTable {
     }
 
     public function addDateTime (string $name, bool $not_null = false, string $default_value = null, int $fsp = null) {
-        $this->columns[] = array(
+        $this->columns[$name] = array(
             'type' => "datetime",
             'name' => $name,
             'not_null' => $not_null,
