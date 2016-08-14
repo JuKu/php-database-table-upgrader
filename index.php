@@ -79,6 +79,4 @@ var_dump($table->listColumnsFromDatabase());
 
 var_dump(DBTable::getTableStructure("test", $dbDriver));
 
-echo "test";
-
 ?>
