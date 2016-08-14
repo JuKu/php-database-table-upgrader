@@ -1470,6 +1470,8 @@ class DBTable {
     }
 
     public static function getTableStructureByInformationSchema (string $table_name, DBDriver &$dbDriver) {
+        echo "SELECT * FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA` = '" . $dbDriver->getDatabaseName() . "' AND `TABLE_NAME` = `{DBPRAEFIX}" . $table_name . "`; ";
+
         //https://dev.mysql.com/doc/refman/5.5/en/creating-tables.html
         return $dbDriver->listRows("SELECT * FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA` = '" . $dbDriver->getDatabaseName() . "' AND `TABLE_NAME` = `{DBPRAEFIX}" . $table_name . "`; ", array(), true);
     }
