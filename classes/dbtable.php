@@ -1314,19 +1314,23 @@ class DBTable {
             $datatype = "";
 
             $array1 = explode("(", $type);
-            $datatype = $array1[0];
+            $datatype = strtolower($array1[0]);
 
             if (count($array1) > 1) {
                 $array2 = explode(")", $array1[1]);
                 $array3 = explode(",", $array2[0]);
 
-                if (count($array3) > 1) {
-                    //length and decimals are available
-                    $length = (int) $array3[0];
-                    $decimals = (int) $array3[1];
+                if (strcmp($datatype, "enum") || strcmp($datatype, "set")) {
+                    //ENUM or SET, options are available
                 } else {
-                    //only length is available
-                    $length = (int) $array3[0];
+                    if (count($array3) > 1) {
+                        //length and decimals are available
+                        $length = (int) $array3[0];
+                        $decimals = (int) $array3[1];
+                    } else {
+                        //only length is available
+                        $length = (int) $array3[0];
+                    }
                 }
             }
 
