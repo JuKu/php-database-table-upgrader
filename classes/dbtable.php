@@ -1315,6 +1315,8 @@ class DBTable {
             $extra = $row['Extra'];
             $auto_increment = false;
             $on_update_current_timestamp = false;
+            $unsigned = false;
+            $zerofill = false;
 
             $datatype = "";
             $values = array();
@@ -1371,6 +1373,26 @@ class DBTable {
                 $on_update_current_timestamp = true;
             }
 
+            //check for unsigned and zerofill
+            $datatype_attributes = explode(" ", $type);
+
+            if (count($datatype_attributes) > 1) {
+                //there are other attributes available
+
+                //iterate through datatype attributes, for example: int(10) unsigned zerofill
+                for ($i = 1; i < count($datatype_attributes); $i++) {
+                    switch ($datatype_attributes[$i]) {
+                        case 'unsigned':
+                            $unsigned = true;
+                            break;
+
+                        case 'zerofill':
+                            $zerofill = true;
+                            break;
+                    }
+                }
+            }
+
             $columns[$name] = array(
                 'type' => $datatype,
                 'name' => $name,
@@ -1380,6 +1402,8 @@ class DBTable {
                 'values' => $values,//only for enum and set
                 'auto_increment' => $auto_increment,
                 'on_update_current_timestamp' => $on_update_current_timestamp,
+                'unsigned' => $unsigned,
+                'zerofill' => $zerofill,
                 'default' => $default
             );
         }
@@ -1441,6 +1465,11 @@ class DBTable {
     }
 
     public static function getTableStructure (string $table_name, DBDriver $dbDriver) {
+        //https://dev.mysql.com/doc/refman/5.5/en/creating-tables.html
+        return $dbDriver->listRows("DESCRIBE `{DBPRAEFIX}" . $table_name . "`; ");
+    }
+
+    public static function getTableStructureByInformationSchema (string $table_name, DBDriver $dbDriver) {
         //https://dev.mysql.com/doc/refman/5.5/en/creating-tables.html
         return $dbDriver->listRows("DESCRIBE `{DBPRAEFIX}" . $table_name . "`; ");
     }
