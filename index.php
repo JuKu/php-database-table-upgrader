@@ -63,7 +63,7 @@ $table->addIndex("test_text");
 $table->addUnique("decimal1");
 
 //add FULLTEXT index
-$table->addFulltext("text");
+//$table->addFulltext("text");
 
 //add multi column index
 $table->addIndex(array("options", "new_options"), "ix_options");
@@ -73,7 +73,5 @@ echo $table->generateCreateQuery();
 
 //create table
 $table->create();
-
-$dbDriver->execute("test");
 
 ?>
