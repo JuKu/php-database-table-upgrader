@@ -71,7 +71,11 @@ $table->addIndex(array("options", "new_options"), "ix_options");
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
 
+var_dump($table->existsTable());
+
 //create table
 $table->create();
+
+var_dump($table->existsTable());
 
 ?>

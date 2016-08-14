@@ -1329,6 +1329,10 @@ class DBTable {
         $this->db_driver->query("DROP TABLE `{DBPRAEFIX}" . $this->table_name . "`; ");
     }
 
+    public function existsTable () : bool {
+        return count($this->db_driver->listRows("SHOW TABLES LIKE '{DBPRAEFIX}" . $this->table_name . "'; ")) > 0;
+    }
+
     public function escape (string $str) {
         return utf8_encode(htmlentities($str));
     }
