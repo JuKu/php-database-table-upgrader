@@ -60,7 +60,7 @@ class DBTable {
         $founded_engine = "";
 
         foreach (self::$supported_engines as $name) {
-            if (strcmp(strtolower($engine_name), strtolower($name))) {
+            if (strcmp(strtolower($engine_name), strtolower($name)) == 0) {
                 //database engine is supported
                 $found = true;
                 $founded_engine = $name;
@@ -1323,7 +1323,7 @@ class DBTable {
                 $array2 = explode(")", $array1[1]);
                 $array3 = explode(",", $array2[0]);
 
-                if (strcmp($datatype, "enum") || strcmp($datatype, "set")) {
+                if (strcmp($datatype, "enum") == 0 || strcmp($datatype, "set") == 0) {
                     //ENUM or SET, options are available
                     echo "enum or set: " . $datatype . "<br />";
 
@@ -1347,13 +1347,13 @@ class DBTable {
                 //no length set
             }
 
-            if (strcmp($row['Null'], "YES")) {
+            if (strcmp($row['Null'], "YES") == 0) {
                 $not_null = false;
             } else {
                 $not_null = true;
             }
 
-            if (strcmp($row['Default'], "NULL")) {
+            if (strcmp($row['Default'], "NULL") == 0) {
                 $default = null;
             } else {
                 $default = $row['Default'];
