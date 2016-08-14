@@ -1330,6 +1330,7 @@ class DBTable {
     }
 
     public function existsTable () : bool {
+        print_r($this->db_driver->listRows("SHOW TABLES LIKE '{DBPRAEFIX}" . $this->table_name . "'; "));
         return count($this->db_driver->listRows("SHOW TABLES LIKE '{DBPRAEFIX}" . $this->table_name . "'; ")) > 0;
     }
 
