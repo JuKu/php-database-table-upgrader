@@ -1298,6 +1298,54 @@ class DBTable {
         }
     }
 
+    public function listColumnsFromDatabase () : array {
+        $columns = array();
+
+        //get columns from database
+        $rows = self::getTableStructure($this->table_name, $this->db_driver);
+
+        //iterate through rows
+        foreach ($rows as $row) {
+            $name = $row['Field'];
+            $type = $row['Type'];
+            $length = null;
+            $decimals = null;
+
+            $datatype = "";
+
+            $array1 = explode("(", $type);
+            $datatype = $array1[0];
+
+            if (count($array1) > 1) {
+                $array2 = explode(")", $array1[1]);
+                $array3 = explode(",", $array2[0]);
+
+                if (count($array3) > 1) {
+                    //length and decimals are available
+                    $length = (int) $array3[0];
+                    $decimals = (int) $array3[1];
+                } else {
+                    //only length is available
+                    $length = (int) $array3[0];
+                }
+            }
+
+            $columns[$name] = array(
+                'type' => $datatype,
+                'name' => $name,
+                'length' => $length,
+                'decimals' => $decimals
+            );
+        }
+
+        //return column array
+        return $columns;
+    }
+
+    protected function detectTableChanges () : array {
+        //
+    }
+
     public function truncate () {
         $this->db_driver->query("TRUNCATE `" . $this->table_name . "`; ");
     }

@@ -74,4 +74,7 @@ echo $table->generateCreateQuery();
 //upgrade table structure or create table, if table not exists
 $table->upgrade();
 
+//list columns from database
+var_dump($table->listColumnsFromDatabase());
+
 ?>
