@@ -1325,7 +1325,6 @@ class DBTable {
 
                 if (strcmp($datatype, "enum") == 0 || strcmp($datatype, "set") == 0) {
                     //ENUM or SET, options are available
-                    echo "enum or set: " . $datatype . "<br />";
 
                     //get options
                     foreach ($array3 as $value) {
