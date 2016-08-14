@@ -1312,6 +1312,9 @@ class DBTable {
             $decimals = null;
             $not_null = false;
             $default = null;
+            $extra = $row['Extra'];
+            $auto_increment = false;
+            $on_update_current_timestamp = false;
 
             $datatype = "";
             $values = array();
@@ -1358,6 +1361,16 @@ class DBTable {
                 $default = $row['Default'];
             }
 
+            //check for AUTO_INCREMENT
+            if (strpos($extra, 'auto_increment') !== false) {
+                $auto_increment = true;
+            }
+
+            //check for on update CURRENT_TIMESTAMP
+            if (strpos($extra, 'on update CURRENT_TIMESTAMP') !== false) {
+                $on_update_current_timestamp = true;
+            }
+
             $columns[$name] = array(
                 'type' => $datatype,
                 'name' => $name,
@@ -1365,6 +1378,8 @@ class DBTable {
                 'decimals' => $decimals,
                 'not_null' => $not_null,
                 'values' => $values,//only for enum and set
+                'auto_increment' => $auto_increment,
+                'on_update_current_timestamp' => $on_update_current_timestamp,
                 'default' => $default
             );
         }
