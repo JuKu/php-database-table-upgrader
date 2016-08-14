@@ -140,7 +140,7 @@ class MySQLDriver implements DBDriver {
 
     public function query($sql) : PDOStatement {
         //add query to history
-        $this->query_history[] = array('query' => $sql, 'params' => $params);
+        $this->query_history[] = array('query' => $sql);
 
         //increment query counter
         $this->queries++;

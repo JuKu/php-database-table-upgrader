@@ -1283,7 +1283,7 @@ class DBTable {
      */
     public function create () {
         //create table
-        $this->db_driver->query($this->generateCreateQuery());
+        $this->db_driver->execute($this->generateCreateQuery());
     }
 
     /**
