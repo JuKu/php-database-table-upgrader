@@ -86,6 +86,7 @@ class MySQLDriver implements DBDriver {
             $res = $stmt->execute();
 
             if (!$res) {
+                //TODO: throw exception instead
                 print_r($stmt->errorInfo());
                 exit;
             }
@@ -130,7 +131,7 @@ class MySQLDriver implements DBDriver {
         return $this->conn->quote($str);
     }
 
-    private function getQuery ($sql) {
+    protected function getQuery ($sql, bool $allow_information_schema = false) {
         /**
          * check, if sql query contains comments
          *
@@ -140,6 +141,35 @@ class MySQLDriver implements DBDriver {
             throw new SecurityException("SQL comments arent allowed here! Please remove sql comments from query!");
         }
 
+        /**
+         * check, if LOAD_FILE was used to read out an file from local file system
+         *
+         * This command if often used by SQL Injections and because many mysql server runs with root privilegs,
+         * it allows hackers to read out every file on the file system
+         */
+        if (strstr(strtoupper($sql), "LOAD_FILE")) {
+            throw new SecurityException("SQL command LOAD_FILE isnt allowed here! Please remove sql command LOAD_FILE from query!");
+        }
+
+        /**
+         * check, if INTO OUTFILE was used to write into an file of local file system
+         *
+         * This command if often used by SQL Injections and because many mysql server runs with root privilegs,
+         * it allows hackers, for example, to select all database querys and save them in an public file on the webserver to download or he can write configuration files.
+         */
+        if (strstr(strtoupper($sql), "INTO OUTFILE")) {
+            throw new SecurityException("SQL command INTO OUTFILE ist allowed here! Please remove sql command INTO OUTFILE from query!");
+        }
+
+        /**
+         * check, if virtual database INFORMATION_SCHEMA is be used
+         *
+         * in virtual database INFORMATION_SCHEMA are many meta data of mysql stored, which an hacker can be use to hack the website / database faster
+         */
+        if (strstr(strtoupper($sql), "INFORMATION_SCHEMA") && !$allow_information_schema) {
+            throw new SecurityException("SQL database INFORMATION_SCHEMA ist allowed here! Please remove sql database INFORMATION_SCHEMA from query!");
+        }
+
         $sql = str_replace("{DBPRAEFIX}", $this->praefix, $sql);
         $sql = str_replace("{praefix}", $this->praefix, $sql);
         return str_replace("{PRAEFIX}", $this->praefix, $sql);
@@ -147,12 +177,18 @@ class MySQLDriver implements DBDriver {
 
     public function query($sql) : PDOStatement {
         //add query to history
-        self::$query_history[] = array('query' => $sql);
+        self::$query_history[] = array('query' => $sql, 'params' => array());
 
         //increment query counter
         $this->queries++;
 
-        return $this->conn->query($this->getQuery($sql));
+        $res = $this->conn->query($this->getQuery($sql));
+
+        if (!$res) {
+            throw new PDOException("PDOException while query(): " . ($this->getErrorInfo())[3] . "");
+        }
+
+        return $res;
     }
 
     public function listTables() : array {
@@ -161,9 +197,9 @@ class MySQLDriver implements DBDriver {
         return $rows;
     }
 
-    public function getRow($sql, $params = array()) {
+    public function getRow($sql, $params = array(), bool $allow_information_schema = false) {
         //get prepared statement
-        $stmt = $this->prepare($sql);
+        $stmt = $this->prepare($sql, $allow_information_schema);
 
         foreach ($params as $key=>$value) {
             if (is_array($value)) {
@@ -180,15 +216,19 @@ class MySQLDriver implements DBDriver {
         $this->queries++;
 
         //execute query
-        $stmt->execute();
+        $res = $stmt->execute();
+
+        if (!$res) {
+            throw new PDOException("PDOException while getRow(): " . ($this->getErrorInfo())[3] . "");
+        }
 
         //fetch row
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function listRows($sql, $params = array()) : array {
+    public function listRows($sql, $params = array(), bool $allow_information_schema = false) : array {
         //get prepared statement
-        $stmt = $this->prepare($sql);
+        $stmt = $this->prepare($sql, $allow_information_schema);
 
         //add query to history
         self::$query_history[] = array('query' => $sql, 'params' => $params);
@@ -205,7 +245,11 @@ class MySQLDriver implements DBDriver {
         }
 
         //execute query
-        $stmt->execute();
+        $res = $stmt->execute();
+
+        if (!$res) {
+            throw new PDOException("PDOException while listRows(): " . ($this->getErrorInfo())[3] . "");
+        }
 
         //fetch rows
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -231,15 +275,15 @@ class MySQLDriver implements DBDriver {
         $this->conn->commit();
     }
 
-    public function prepare($sql) : PDOStatement {
-        $sql = $this->getQuery($sql);
+    public function prepare($sql, bool $allow_information_schema = false) : PDOStatement {
+        $sql = $this->getQuery($sql, $allow_information_schema);
 
         if (isset($this->prepared_cache[md5($sql)])) {
             return $this->prepared_cache[md5($sql)];
         } else {
             $stmt = $this->conn->prepare($sql);
 
-            if (!$stmt) {
+            if (!$stmt/* && defined('DEBUG_MODE') && DEBUG_MODE*/) {
                 echo "\nPDO::errorInfo():\n";
                 print_r($this->conn->errorInfo());
 
@@ -263,4 +307,5 @@ class MySQLDriver implements DBDriver {
     public function getErrorInfo() : array {
         return $this->conn->errorInfo();
     }
+
 }
