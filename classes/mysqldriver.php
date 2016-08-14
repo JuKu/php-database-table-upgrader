@@ -87,6 +87,7 @@ class MySQLDriver implements DBDriver {
 
             if (!$res) {
                 print_r($stmt->errorInfo());
+                exit;
             }
 
             return $res;
@@ -241,6 +242,8 @@ class MySQLDriver implements DBDriver {
             if (!$stmt) {
                 echo "\nPDO::errorInfo():\n";
                 print_r($this->conn->errorInfo());
+
+                exit;
             }
 
             //put prepared statement into cache
