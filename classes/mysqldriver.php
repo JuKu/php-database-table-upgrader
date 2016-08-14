@@ -237,4 +237,8 @@ class MySQLDriver implements DBDriver {
             return $stmt;
         }
     }
+
+    public function listQueryHistory() : array {
+        return $this->query_history;
+    }
 }

@@ -74,4 +74,6 @@ echo $table->generateCreateQuery();
 //create table
 $table->create();
 
+var_dump($dbDriver->listQueryHistory());
+
 ?>

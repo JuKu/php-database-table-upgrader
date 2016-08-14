@@ -40,6 +40,8 @@ interface DBDriver {
 
     public function prepare ($sql) : PDOStatement;
 
+    public function listQueryHistory () : array;
+
     public function close ();
 
 }
