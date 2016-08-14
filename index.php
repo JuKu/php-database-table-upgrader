@@ -74,6 +74,4 @@ echo $table->generateCreateQuery();
 //create table
 $table->create();
 
-echo "Database: " . $dbDriver->getDatabaseName() . "<br /><br />";
-
 ?>
