@@ -71,7 +71,7 @@ $table->addIndex(array("options", "new_options"), "ix_options");
 //print CREATE statement for debugging
 echo $table->generateCreateQuery();
 
-//create table
-$table->create();
+//upgrade table structure or create table, if table not exists
+$table->upgrade();
 
 ?>

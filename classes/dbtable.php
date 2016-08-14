@@ -1290,7 +1290,12 @@ class DBTable {
      * upgrades table structure in database, or if table not exists, creates table
      */
     public function upgrade () {
-        //TODO: add code here
+        if (!$this->existsTable()) {
+            //create table structure
+            $this->create();
+        } else {
+            //TODO: add code here
+        }
     }
 
     public function truncate () {
