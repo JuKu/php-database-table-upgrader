@@ -2,6 +2,7 @@
 An database upgrader for upgrade mysql table structures automatically
 
 Version: 0.0.1 alpha
+License: LGPL 3.0
 
 Currently upgrade isnt fully integrated, but table creation should be work.
 Work in Progress!
