@@ -1323,10 +1323,10 @@ class DBTable {
 
                 if (strcmp($datatype, "enum") || strcmp($datatype, "set")) {
                     //ENUM or SET, options are available
+                    echo "enum or set.";
 
                     //get options
                     foreach ($array3 as $value) {
-                        $value = str_replace("'", "", $value);
                         $value = str_replace("'", "", $value);
 
                         $values[] = $value;
