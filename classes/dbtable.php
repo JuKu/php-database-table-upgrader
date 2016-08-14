@@ -1470,6 +1470,10 @@ class DBTable {
     }
 
     public static function getTableStructureByInformationSchema (string $table_name, DBDriver &$dbDriver) {
+        //https://makandracards.com/makandra/2531-show-the-character-set-and-the-collation-of-your-mysql-tables
+
+        //http://stackoverflow.com/questions/8662906/getting-mysql-to-display-the-encoding-used-for-a-particular-column
+
         echo "SELECT * FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA` = '" . $dbDriver->getDatabaseName() . "' AND `TABLE_NAME` = `{DBPRAEFIX}" . $table_name . "`; ";
 
         //https://dev.mysql.com/doc/refman/5.5/en/creating-tables.html
