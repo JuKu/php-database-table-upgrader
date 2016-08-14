@@ -1310,6 +1310,8 @@ class DBTable {
             $type = $row['Type'];
             $length = null;
             $decimals = null;
+            $not_null = false;
+            $default = null;
 
             $datatype = "";
             $values = array();
@@ -1345,12 +1347,26 @@ class DBTable {
                 //no length set
             }
 
+            if (strcmp($row['Null'], "YES")) {
+                $not_null = false;
+            } else {
+                $not_null = true;
+            }
+
+            if (strcmp($row['Default'], "NULL")) {
+                $default = null;
+            } else {
+                $default = $row['Default'];
+            }
+
             $columns[$name] = array(
                 'type' => $datatype,
                 'name' => $name,
                 'length' => $length,
                 'decimals' => $decimals,
-                'values' => $values//only for enum and set
+                'not_null' => $not_null,
+                'values' => $values,//only for enum and set
+                'default' => $default
             );
         }
 
