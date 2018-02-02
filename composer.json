@@ -5,7 +5,7 @@
   "description": "php-database-table-upgrader, An database upgrader for upgrade mysql table structures automatically. You dont have to write CREATE TABLE, ALTER TABLE querys and so on anymore, just configure your table structure in PHP and the classes will upgrade your table structures automatically.",
   "keywords": ["PHP7", "PHP", "database", "mysql", "MySQL5", "database", "database upgrader", "auto upgrade", "automatically database upgrader", "upgrader"],
   "homepage": "https://github.com/JuKu/php-database-table-upgrader",
-  "license": "LGPL 3.0",
+  "license": "LGPL-3.0-or-later",
   "authors": [
     {
       "name": "Justin Kuenzel",
