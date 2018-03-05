@@ -848,7 +848,11 @@ class DBTable {
             }
 
             if (isset($column['default']) && $column['default'] != null) {
-                $default_str = " DEFAULT '" . $column['default'] . "'";
+            	if ($column['default'] === "CURRENT_TIMESTAMP") {
+					$default_str = " DEFAULT CURRENT_TIMESTAMP";
+				} else {
+					$default_str = " DEFAULT '" . $column['default'] . "'";
+				}
             }
 
             switch ($column['type']) {
@@ -1294,7 +1298,10 @@ class DBTable {
             //create table structure
             $this->create();
         } else {
+        	var_dump($this->detectTableChanges());
+
             //TODO: add code here
+			//throw new Exception("Upgrading of tables isnt supported yet.");
         }
     }
 
@@ -1413,8 +1420,109 @@ class DBTable {
     }
 
     protected function detectTableChanges () : array {
-        //
+    	//columns
+    	$changed_columns = array();
+    	$added_columns = array();
+    	$removed_columns = array();
+
+    	//indexes
+		$changed_indexes = array();
+		$added_indexes = array();
+		$removed_indexes = array();
+
+
+        //compare current state with should state
+		$current_columns = $this->listColumnsFromDatabase();
+		$should_columns = $this->columns;
+
+		//check for added columns
+		foreach ($should_columns as $name=>$column_data) {
+			if (!isset($current_columns[$name])) {
+				//new column found
+				$added_columns[$name] = $should_columns[$name];
+			}
+		}
+
+		//check for removed columns
+		foreach ($current_columns as $name=>$column_data) {
+			if (!isset($should_columns[$name])) {
+				//removed column found
+				$removed_columns[$name] = $current_columns[$name];
+			}
+		}
+
+		//check for changed columns
+		foreach ($should_columns as $name=>$column_data) {
+			//we dont have to check this column, if the column was added
+			if (isset($added_columns[$name])) {
+				continue;
+			}
+
+			//we dont have to check this column, if the column was removed
+			if (isset($removed_columns[$name])) {
+				continue;
+			}
+
+			//check for differences
+			foreach ($should_columns[$name] as $key=>$value) {
+				if (!isset($should_columns[$name][$key]) && !@is_null($should_columns[$name][$key])) {
+					echo "Column '" . $key . "' not found.\n\n";
+
+					echo "should columns:\n";
+					var_dump($should_columns);
+
+					echo "\n\ncurrent columns:\n";
+					var_dump($current_columns);
+
+					echo "\n\n";
+				}
+
+				if (strcmp($name, "charset") && @$current_columns[$name][$key] == "NULL") {
+					continue;
+				}
+
+				if (strcmp($name, "bool(false)")) {
+					continue;
+				}
+
+				if (!isset($current_columns[$name][$key]) && !@is_null($current_columns[$name][$key])) {
+					echo "$" . "current_columns['" . $name . "']['" . $key . "'] not found:\n";
+					var_dump($current_columns);
+
+					echo "\n\nshould columns:\n";
+					var_dump($should_columns);
+				}
+
+				if ($current_columns[$name][$key] != $value) {
+					$changed_columns[$name] = $should_columns[$name];
+				}
+			}
+		}
+
+		//TODO: check for changed indexes / keys
+
+		//TODO: change database engine if neccessary
+
+		//TODO: change charset if neccessary
+
+		return array(
+			'added_columns' => $added_columns,
+			"removed_columns" => $removed_columns,
+			"changed_columns" => $changed_columns,
+			"added_indexes" => $added_indexes,
+			"removed_indexes" => $removed_indexes,
+			"changed_indexes" => $changed_indexes
+		);
     }
+
+    /**
+     * backup table
+	 *
+	 * @param $output_file file where sql query should be written in
+     */
+    public function backup (string $output_file) : void {
+    	//TODO: implement this feature
+	}
 
     public function truncate () {
         $this->db_driver->query("TRUNCATE `" . $this->table_name . "`; ");
